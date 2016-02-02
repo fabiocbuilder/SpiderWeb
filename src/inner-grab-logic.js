@@ -2,6 +2,8 @@
  * Logica dinamica per analizzare la pagina web
  */
 
+print("inizio");
+
 var append = "";
 
 //questo è l'oggetto che mi rappresenta un tag secondo un detemrinato criterio:
@@ -31,7 +33,7 @@ function grabInformations(tag) {
 
     //il tag passato ha o non ha figli? Oppure, ha ancora posizioni disponibili?
     if (tag.pos > 0) {
-
+        print("Tag: " + tag.element.getTagName());
         //prendo l'elemento alla posizione "pos" del suo elemento padre
         var innerElement = tag.element.getElement(tag.pos);
 
@@ -99,4 +101,4 @@ result = append;
  *              <tag4> testo
  */
 
-//< script type = "text/javascript" src = "../underscore-min.js" / >
+< script src = "../underscore-min.js" > 
