@@ -5,7 +5,6 @@
  */
 package it.spiderweb.bl;
 
-import com.google.gson.Gson;
 import it.sauronsoftware.grab4j.ScriptException;
 import it.sauronsoftware.grab4j.WebGrabber;
 import it.sauronsoftware.grab4j.html.HTMLDocument;
@@ -17,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import sun.org.mozilla.javascript.internal.json.JsonParser;
 
 /**
  * Constructs a spider/crawler for web pages. A spider web can search and found
@@ -170,7 +168,7 @@ public class Spider {
     public String getJsonArray(File file, File criteria) throws FileNotFoundException, IOException, HTMLParseException {
         InputStream inputStream = new FileInputStream(file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
-        return buildJsonArray(htmlDocumentToScan, criteria);
+        return getJsonArray(htmlDocumentToScan, criteria);
     }
 
     /**
@@ -187,7 +185,7 @@ public class Spider {
         File file = new File(path);
         InputStream inputStream = new FileInputStream(file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
-        return buildJsonArray(htmlDocumentToScan, criteria);
+        return getJsonArray(htmlDocumentToScan, criteria);
     }
 
     /**
@@ -202,7 +200,7 @@ public class Spider {
      */
     public String getJsonArray(URL url, File criteria) throws FileNotFoundException, IOException, HTMLParseException {
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(url);
-        return buildJsonArray(htmlDocumentToScan, criteria);
+        return getJsonArray(htmlDocumentToScan, criteria);
     }
 
     //--------------------------------------------------------------------------
@@ -215,7 +213,7 @@ public class Spider {
     public String getJsonArrayFromFile() throws FileNotFoundException, IOException, HTMLParseException {
         InputStream inputStream = new FileInputStream(this.file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
-        return buildJsonArray(htmlDocumentToScan, this.criteria);
+        return getJsonArray(htmlDocumentToScan, this.criteria);
     }
 
     /**
@@ -228,7 +226,7 @@ public class Spider {
         File file = new File(this.path);
         InputStream inputStream = new FileInputStream(file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
-        return buildJsonArray(htmlDocumentToScan, this.criteria);
+        return getJsonArray(htmlDocumentToScan, this.criteria);
     }
 
     /**
@@ -240,7 +238,7 @@ public class Spider {
      */
     public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(this.url);
-        return buildJsonArray(htmlDocumentToScan, criteria);
+        return getJsonArray(htmlDocumentToScan, this.criteria);
     }
 
     //--------------------------------------------------------------------------
@@ -252,7 +250,7 @@ public class Spider {
      * @param criteria
      * @return
      */
-    private String buildJsonArray(HTMLDocument htmlDocument, File criteria) {
+    private String getJsonArray(HTMLDocument htmlDocument, File criteria) {
         try {
             return (String) WebGrabber.grab(htmlDocument, criteria);
         } catch (IOException | ScriptException ex) {
