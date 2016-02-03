@@ -4,8 +4,8 @@
 
 print("inizio");
 
-< script src = "../underscore-min.js" / >
-        var append = "";
+//< script src = "../underscore-min.js" / >
+var append = "";
 
 //questo è l'oggetto che mi rappresenta un tag secondo un detemrinato criterio:
 //"element" è il tag vero e proprio, "pos" è il riferimento all'elemento
@@ -24,9 +24,7 @@ var tags = [];
 var elements = document.searchElements("html/body/.../div(class=*footer*)");
 
 for (var i = 0; i < elements.length; i++) {
-
     print(elements[i].getAttribute("class"));
-
     grabInformations(new Tag(elements[i], elements[i].getElementCount()));
 }
 
@@ -40,7 +38,7 @@ function grabInformations(tag) {
         print("Tag: " + tag.element.getTagName());
 
         //prendo l'elemento alla posizione "pos" del suo elemento padre
-        var innerElement = tag.element.getElement(tag.pos);
+        var innerElement = tag.element.getElement(tag.pos - 1);
 
         //a partire da quest'ultimo elemento, mi reo il rispettivo tag con
         //tanto di numero di elementi presenti al suo interno.
@@ -96,7 +94,7 @@ function findTagAndDecreasePos(tagToFind) {
 
 result = append;
 
-//questo è l'esempio utilizzato per progettare e testare lo script all'interno di questo file
+//questo è l'unico esempio utilizzato per progettare e testare lo script all'interno di questo file
 /* <tag1>
  *      <tag2>
  *          <tag3>
