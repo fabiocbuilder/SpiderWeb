@@ -4,7 +4,8 @@
 
 print("inizio");
 
-var append = "";
+< script src = "../underscore-min.js" / >
+        var append = "";
 
 //questo è l'oggetto che mi rappresenta un tag secondo un detemrinato criterio:
 //"element" è il tag vero e proprio, "pos" è il riferimento all'elemento
@@ -23,7 +24,9 @@ var tags = [];
 var elements = document.searchElements("html/body/.../div(class=*footer*)");
 
 for (var i = 0; i < elements.length; i++) {
+
     print(elements[i].getAttribute("class"));
+
     grabInformations(new Tag(elements[i], elements[i].getElementCount()));
 }
 
@@ -33,7 +36,9 @@ function grabInformations(tag) {
 
     //il tag passato ha o non ha figli? Oppure, ha ancora posizioni disponibili?
     if (tag.pos > 0) {
+
         print("Tag: " + tag.element.getTagName());
+
         //prendo l'elemento alla posizione "pos" del suo elemento padre
         var innerElement = tag.element.getElement(tag.pos);
 
@@ -49,7 +54,10 @@ function grabInformations(tag) {
         //da poter esplorare i suoi tag interni con la stessa logica spiegata
         //nei precedenti commenti
         grabInformations(newTag);
+
     } else {
+
+        print("Il tag " + tag.element.getTagName() + " ha il seguente testo: " + tag.element.getInnerText());
 
         //allora vuole dire che dentro a questo tag ci potrebbe essere del testo,
         //quindi me lo prendo (il testo).
@@ -80,6 +88,7 @@ function findTagAndDecreasePos(tagToFind) {
         //lo si ritorna. Ovviamente si aggiorna anche il record nell'array.
         if (_.isMatch(currTag.element, tagToFind.element)) {
             tags[i] = new Tag(currTag.tagName, (currTag.pos - 1));
+            print("Tag trovato: " + tags[i].element.gettagName() + " con posizione " + tags[i].pos);
             return tags[i];
         }
     }
@@ -100,5 +109,3 @@ result = append;
  *          <tag3>
  *              <tag4> testo
  */
-
-< script src = "../underscore-min.js" > 
