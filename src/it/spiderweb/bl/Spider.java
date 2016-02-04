@@ -237,8 +237,19 @@ public class Spider {
      * @throws HTMLParseException
      * @throws it.sauronsoftware.grab4j.ScriptException
      */
-    public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
-        HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(this.url);
+    public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {      
+        /* 
+        Per settare un predefinito User-Agent ho trovato un thread su stackoverflow
+        che mi fa creare un oggetto URLConnection in modo da poter accedere al metodo
+        setRequestProperty(String,String), dove setto lo User-Agent
+        E' possibile poi mandare in pasto alla buildDocument(InputStream is) un ogetto InputStream
+        (Tutto questo serve teoricamente per non far capire al server che sto visitando 6000 pagine al minuto e non mi blocchi)
+        http://stackoverflow.com/questions/30092798/java-io-ioexception-server-returned-http-response-code-403-for-url
+        */
+        URLConnection conn = url.openConnection();
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0");      
+        InputStream is = conn.getInputStream();
+        HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(is);
         return getJsonArray(htmlDocumentToScan, this.criteria);
     }
 
