@@ -237,20 +237,20 @@ public class Spider {
      * @throws HTMLParseException
      * @throws it.sauronsoftware.grab4j.ScriptException
      */
-    public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {      
-        /* 
-        Per settare un predefinito User-Agent ho trovato un thread su stackoverflow
-        che mi fa creare un oggetto URLConnection in modo da poter accedere al metodo
-        setRequestProperty(String,String), dove setto lo User-Agent
-        E' possibile poi mandare in pasto alla buildDocument(InputStream is) un ogetto InputStream
-        (Tutto questo serve teoricamente per non far capire al server che sto visitando 6000 pagine al minuto e non mi blocchi)
-        http://stackoverflow.com/questions/30092798/java-io-ioexception-server-returned-http-response-code-403-for-url
-        */
-        URLConnection conn = url.openConnection();
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0");      
-        InputStream is = conn.getInputStream();
-        HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(is);
-        return getJsonArray(htmlDocumentToScan, this.criteria);
+    public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
+        HTMLDocument htmlDocument = HTMLDocumentFactory.buildDocument(url);
+        String JSON = "";
+
+        int current_page = 1;
+        int tot_page = (int) WebGrabber.grab(htmlDocument, "src/it/spiderweb/getpage-blankpages.js");
+
+        do {
+            url = new URL(url.toString() + "&p=" + current_page++);
+            HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(url);
+            JSON += getJsonArray(htmlDocumentToScan, criteria);
+        } while (current_page <= tot_page);
+
+        return JSON;
     }
 
     //--------------------------------------------------------------------------
