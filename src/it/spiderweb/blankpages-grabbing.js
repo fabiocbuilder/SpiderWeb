@@ -6,27 +6,16 @@
 
 var doc = document;
 
-//var doc_url = doc.URL; <------> bugged for Firefox (https://developer.mozilla.org/en-US/docs/Web/API/Document/location)
-
-/* Che incualta.. 
- * E' possibile accedere a particolari parametri come ad esempio l'url della pagina in due modi:
- * o da document o da window. 
- * 
- * Es:
- * document.URL o dcument.location.href --> ritornano l'url in una stringa
- * window.location.href --> ritorna l'url in una stringa
- * 
- * Come scritto nel link, questi attributi non sono accessibili dentro a un contesto SENZA BROWSER (se si usa FIREFOX)
- * window invece si.. ma window funziona SOLO se il programma tratta una FINESTRA BROWSER APERTA, che non è il nostro caso
+/**
+ * contiene l'URL iniziale della pagina
  */
-
 var doc_url = doc.URL;
 
 /**
  * Il nostro caro JSON
  * @type String|String
  */
-var json = "{\"users-info\":[";
+var json = "";
 
 /**
  * Questa funzione toglie inutili informazioni aggiuntive di una specifica 
@@ -76,7 +65,6 @@ function format(tag) {
     return output;
 }
 
-doc = openDocument(doc_url + "&p=" + (current_page++));
 var list = doc.searchElements(".../div(class=list-left)/div(id=co_*)");
 for (var i = 0; i < list.length; i++) {
     var pageLink = list[i].searchElement(".../h2(class=rgs)/a");
@@ -107,7 +95,5 @@ for (var i = 0; i < list.length; i++) {
                 "\"email\":" + "\"" + format(email) + "\"" + "}" + ",";
     }
 }
-
-json = json.slice(0, json.length - 1) + "]}"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa, prima di chiudere il json
 
 result = json;

@@ -7,6 +7,7 @@
 /**
  * Indica il numero di pagine totali
  */
+
 var tot_page = document.searchElement("html/body/.../div(class=pag-group)/.../p(class=listing-pag-r)/b[1]"); //vado a pescarmi il numerino che indica il numero totale di pagine 
 
 /*
