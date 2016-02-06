@@ -2,8 +2,6 @@
  * Logica dinamica per analizzare la pagina web
  */
 
-print("inizio");
-
 //< script src = "../underscore-min.js" / >
 var append = "";
 
@@ -24,7 +22,6 @@ var tags = [];
 var elements = document.searchElements("html/body/.../div(class=*footer*)");
 
 for (var i = 0; i < elements.length; i++) {
-    print(elements[i].getAttribute("class"));
     grabInformations(new Tag(elements[i], elements[i].getElementCount()));
 }
 
@@ -32,10 +29,11 @@ for (var i = 0; i < elements.length; i++) {
 //padre con il quale è stato chiamato.
 function grabInformations(tag) {
 
+    print(tag);
+    print("zio baldrac " + tag.element.getTagName());
+
     //il tag passato ha o non ha figli? Oppure, ha ancora posizioni disponibili?
     if (tag.pos > 0) {
-
-        print("Tag: " + tag.element.getTagName());
 
         //prendo l'elemento alla posizione "pos" del suo elemento padre
         var innerElement = tag.element.getElement(tag.pos - 1);
@@ -55,7 +53,7 @@ function grabInformations(tag) {
 
     } else {
 
-        print("Il tag " + tag.element.getTagName() + " ha il seguente testo: " + tag.element.getInnerText());
+        print("Il tag ha il seguente testo: " + tag.element.getInnerText());
 
         //allora vuole dire che dentro a questo tag ci potrebbe essere del testo,
         //quindi me lo prendo (il testo).
