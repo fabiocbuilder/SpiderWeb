@@ -24,9 +24,9 @@ public class MainTest {
      */
     public static void main(String[] args) {
         try {
-            URL url = new URL("http://www.paginebianche.it/ricerca?qs=elettricista&dv=bologna");
+            URL url = new URL("http://www.paginebianche.it/ricerca?qs=barbiere&dv=modena");
 //            URL url = new URL("http://www.paginegialle.it/");
-            File criteria = new File("src/it/spiderweb/blankpages-grabbing.js");
+            File criteria = new File("src/it/spiderweb/paginebianche-grabbing.js");
             Spider sp = new Spider(url,criteria);
             System.out.println(sp.getJsonArray());  
             } catch (MalformedURLException ex) {

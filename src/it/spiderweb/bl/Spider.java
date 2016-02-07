@@ -16,9 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Constructs a spider/crawler for web pages. A spider web can search and found
@@ -241,26 +238,7 @@ public class Spider {
      */
     public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         HTMLDocument htmlDocument = HTMLDocumentFactory.buildDocument(url);
-        File script_pagine = new File("src/it/spiderweb/getpage-blankpages.js");
-        String doc_url = url.toString();
-        
-        String JSON = "{\"users-info\":[";
-
-        int current_page = 1;
-        int tot_page = Integer.valueOf(""+WebGrabber.grab(htmlDocument, script_pagine));
-        try {
-            do {
-                url = new URL(doc_url + "&p=" + current_page++);
-                HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(url);
-                JSON += getJsonArray(htmlDocumentToScan, criteria);
-                Thread.sleep(10000);              
-            } while (current_page <= tot_page);
-        } catch (InterruptedException ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        JSON = JSON.substring(0,JSON.length()-1) + "]}"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa, prima di chiudere il json
-        return JSON;
+        return getJsonArray(htmlDocument,criteria);
     }
 
     //--------------------------------------------------------------------------
