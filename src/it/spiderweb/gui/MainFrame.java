@@ -19,7 +19,7 @@ public class MainFrame extends JFrame {
      */
     public MainFrame(){
         /* Inizializzazione del main frame */
-        super("Crawler Web - v0.99 ");
+        super("Spider Web - v0.99 ");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(1000, 500);  
         this.setJMenuBar(new Menu());
