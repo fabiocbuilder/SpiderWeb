@@ -45,7 +45,7 @@ var doc_url = doc.URL;
  * Il nostro caro JSON
  * @type String|String
  */
-var json = "{\"users-info\":[";
+var json = "[";
 
 /**
  * Questa funzione toglie inutili informazioni aggiuntive di una specifica 
@@ -150,13 +150,12 @@ function search(){
                         "\"email\":" + "\"" + format(email) + "\"" + "}" + ",";
             }
             var time = ((Math.random()+2)*1000);
-            print("Riposo di: " + time);
             sleep(time);
         }
         print("Fine pagina: " + (current_page - 1));
         sleep(8000);
     } while(current_page <= tot_page);   
-    json = json.substring(0,json.length()-1) + "]}"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa, prima di chiudere il json
+    json = json.substring(0,json.length -1) + "]"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa, prima di chiudere il json
     return json;
 }
 result = search();

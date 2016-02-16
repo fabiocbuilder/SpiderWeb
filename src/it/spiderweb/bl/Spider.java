@@ -19,7 +19,7 @@ import java.net.URL;
 
 /**
  * Constructs a spider/crawler for web pages. A spider web can search and found
- * a specified item with a given criteria on a given web page. A criteria is
+ * specified items on a given web page by using a criteria. A criteria is
  * represented by a Javascript file which contains logic sequences for grabbing
  * specific elements of web pages. For example a criteria could be a Javascript
  * file which returns the title of generic web page. By specifying a web page
@@ -248,7 +248,7 @@ public class Spider {
      * @param criteria
      * @return
      */
-    private String getJsonArray(HTMLDocument htmlDocument, File criteria) {
+    private String getJsonArray(HTMLDocument htmlDocument, File criteria) {        
         try {
             return (String) WebGrabber.grab(htmlDocument, criteria);
         } catch (IOException | ScriptException ex) {

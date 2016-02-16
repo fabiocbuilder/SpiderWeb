@@ -14,4 +14,23 @@ import java.util.List;
 public class ElementContainer {
 
     public List<Element> elements;
+    
+    public ElementContainer(){}
+    
+    public ElementContainer(List<Element> elements){
+        this.elements = elements;
+    }
+    
+    public List<Element> getElements(){
+        return elements;
+    }
+    
+    @Override
+    public String toString(){
+        String output ="";
+        for(Element elem : elements){
+            output += elem.toString() +"\n\n";
+        }
+        return output;
+    }
 }

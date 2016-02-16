@@ -108,4 +108,19 @@ public class Element {
         this.email = email;
     }
 
+    @Override
+    public String toString(){
+        String output = "";
+        output = "Ragione sociale: " + getRgs() + "\n" +
+                 "Indirizzo primario: " + getStreet_adrs() + "\n" +
+                 "Comune: " + getDistrict() + "\n" +
+                 "Provincia: " + getTerritory() + "\n" +
+                 "CAP: " + getCap() + "\n" +
+                 "Telefono: " + getTel() + "\n" +
+                 "Fax: " + getFax() + "\n" +
+                 "Sito Web: " + getWebsite() + "\n" +
+                 "Email: " + getEmail();
+        return output;
+    }
+    
 }

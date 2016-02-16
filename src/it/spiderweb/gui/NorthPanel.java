@@ -5,16 +5,25 @@
  */
 package it.spiderweb.gui;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.sauronsoftware.grab4j.ScriptException;
 import it.sauronsoftware.grab4j.html.HTMLParseException;
+import it.spiderweb.bl.Element;
+import it.spiderweb.bl.ElementContainer;
 import it.spiderweb.bl.Spider;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -58,39 +67,61 @@ public class NorthPanel extends JPanel {
         this.add(address, "West");
         this.add(txtAddress, "Center");
         this.add(search, "East");
-    } 
-   
+    }
+
     class SearchManagement implements ActionListener {
 
         URL url;
         File criteria;
+        Gson gson;
+        ElementContainer table_element;
+        String json;
         
-        public SearchManagement(){
+        public SearchManagement() {
             url = null;
             criteria = null;
+            table_element = null;
+            json = "";
+            gson = new Gson();
+        }
+
+        private boolean isSearching(){
+            return json.equals("");
         }
         
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
         try {
             String txt_url = txtAddress.getText();
             url = new URL(txt_url);
+            
             switch(url.getHost()){
                 case "www.paginebianche.it": 
                     criteria = new File("src/it/spiderweb/paginebianche-grab-logic.js");
                     break;
-                case "paginegialle":
-                    criteria = new File("samalaffatti??");
+                case "www.paginegialle.it":
+                    criteria = new File("src/it/spiderweb/paginegialle-grab-logic.js");
                     break;              
             }
+            
             Spider spider = new Spider(url,criteria);
-            System.out.println(spider.getJsonArray()); 
+            json = spider.getJsonArray();
+            
+            while(isSearching() == true) { wait(); }
+           
+            Type collectionType = new TypeToken<Collection<Element>>(){}.getType();
+            Collection<Element> list = gson.fromJson(json, collectionType);
+            table_element = new ElementContainer((List)list);
+
+            System.out.println(table_element.toString());
             } catch (MalformedURLException ex) {
             System.out.println(ex.getMessage());
         } catch (IOException | HTMLParseException | ScriptException ex) {
             System.out.println(ex.getMessage());
+        }   catch (InterruptedException ex) {
+                Logger.getLogger(NorthPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
     }
-    
-}
 }
