@@ -9,21 +9,20 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.sauronsoftware.grab4j.ScriptException;
 import it.sauronsoftware.grab4j.html.HTMLParseException;
-import it.spiderweb.bl.Element;
 import it.spiderweb.bl.ElementContainer;
 import it.spiderweb.bl.Spider;
+import it.spiderweb.gui.customtable.CustomTableOP;
+import it.spiderweb.gui.customtable.Element;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -71,22 +70,39 @@ public class NorthPanel extends JPanel {
 
     class SearchManagement implements ActionListener {
 
-        URL url;
-        File criteria;
-        Gson gson;
-        ElementContainer table_element;
-        String json;
+        private URL url;
+        private File criteria;
+        private final Gson gson;
+        private final ElementContainer tableElement;
         
         public SearchManagement() {
             url = null;
             criteria = null;
-            table_element = null;
-            json = "";
             gson = new Gson();
+            tableElement = new ElementContainer();
         }
-
-        private boolean isSearching(){
-            return json.equals("");
+        
+        private synchronized void toList(String json) {
+            while(json.equals("")==true){
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            Type collectionType = new TypeToken<Collection<Element>>(){}.getType();
+            Collection<Element> list = gson.fromJson(json, collectionType);
+            tableElement.addAll(list);
+        }
+        
+        private void showTable(){
+            CustomTableOP<Element> mainTable = CenterPanel.TABLE;
+            try {
+                mainTable.addElements(tableElement);
+                mainTable.repaint();
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         
         @Override
@@ -105,21 +121,16 @@ public class NorthPanel extends JPanel {
             }
             
             Spider spider = new Spider(url,criteria);
-            json = spider.getJsonArray();
+            String json = spider.getJsonArray();
             
-            while(isSearching() == true) { wait(); }
-           
-            Type collectionType = new TypeToken<Collection<Element>>(){}.getType();
-            Collection<Element> list = gson.fromJson(json, collectionType);
-            table_element = new ElementContainer((List)list);
-
-            System.out.println(table_element.toString());
+            toList(json);
+            System.out.println(tableElement.toString());
+            showTable();
+            
             } catch (MalformedURLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException | HTMLParseException | ScriptException ex) {
-            System.out.println(ex.getMessage());
-        }   catch (InterruptedException ex) {
-                Logger.getLogger(NorthPanel.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.getMessage());
+            } catch (IOException | HTMLParseException | ScriptException ex) {
+                System.out.println(ex.getMessage());
             }
         }
 

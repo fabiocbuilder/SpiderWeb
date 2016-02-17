@@ -7,7 +7,7 @@
 var doc = document;
 
 var rgs = null;
-var street_adrs = null;
+var address = null;
 var cap = null;
 var tel = null;
 var fax = null;
@@ -131,7 +131,7 @@ function search(){
                 print(doc.URL);
                 var div_indirizzo = ".../div(class=indirizzo)/";
                 rgs = doc.searchElement(div_indirizzo + "/h1");
-                street_adrs = doc.searchElement(div_indirizzo + ".../span(class=street-address)");
+                address = doc.searchElement(div_indirizzo + ".../span(class=street-address)");
                 cap = doc.searchElement(div_indirizzo + ".../span(itemprop=postalCode)"); 
                 district = doc.searchElement(div_indirizzo + ".../span(class=locality)");
                 territory = doc.searchElement(div_indirizzo + ".../span(class=locality)");
@@ -140,7 +140,7 @@ function search(){
                 website = null;
                 email = doc.searchElement(div_indirizzo + ".../span(class=e-mail)/a");
                 json += "{\"rgs\":" + "\"" + format(rgs) + "\"" + "," +
-                        "\"street_adrs\":" + "\"" + format(street_adrs) + "\"" + "," +
+                        "\"street_adrs\":" + "\"" + format(address) + "\"" + "," +
                         "\"district\":" + "\"" + format(district) + "\"" + "," +
                         "\"territory\":" + "\"" + territory + "\"" + "," +
                         "\"cap\":" + "\"" + format(cap) + "\"" + "," +

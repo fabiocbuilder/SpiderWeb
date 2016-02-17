@@ -9,10 +9,10 @@ package it.spiderweb.bl;
  *
  * @author agrimandi
  */
-public class Element {
+public class TableElement {
 
     private String rgs;
-    private String street_adrs;
+    private String address;
     private String district;
     private String territory;
     private String cap;
@@ -21,12 +21,11 @@ public class Element {
     private String website;
     private String email;
 
-    public Element() {
-    }
+    public TableElement() {}
 
-    public Element(String rgs, String street_adrs, String district, String territory, String cap, String tel, String fax, String website, String email) {
+    public TableElement(String rgs, String address, String district, String territory, String cap, String tel, String fax, String website, String email) {
         this.rgs = rgs;
-        this.street_adrs = street_adrs;
+        this.address = address;
         this.district = district;
         this.territory = territory;
         this.cap = cap;
@@ -44,12 +43,12 @@ public class Element {
         this.rgs = rgs;
     }
 
-    public String getStreet_adrs() {
-        return street_adrs;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStreet_adrs(String street_adrs) {
-        this.street_adrs = street_adrs;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDistrict() {
@@ -110,9 +109,9 @@ public class Element {
 
     @Override
     public String toString(){
-        String output = "";
+        String output;
         output = "Ragione sociale: " + getRgs() + "\n" +
-                 "Indirizzo primario: " + getStreet_adrs() + "\n" +
+                 "Indirizzo primario: " + getAddress() + "\n" +
                  "Comune: " + getDistrict() + "\n" +
                  "Provincia: " + getTerritory() + "\n" +
                  "CAP: " + getCap() + "\n" +

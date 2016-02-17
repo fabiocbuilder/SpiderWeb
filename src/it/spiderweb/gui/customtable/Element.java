@@ -4,42 +4,42 @@ package it.spiderweb.gui.customtable;
 public class Element {
 
     @FieldProperties(name = "Azienda", size = 90)
-    private String company = null;
+    private String rgs = "";
 
     @FieldProperties(name = "Indirizzo, Via", size = 90)
-    private String address = null;
+    private String address = "";
 
     @FieldProperties(name = "Comune", size = 90)
-    private String district = null;
+    private String district = "";
 
     @FieldProperties(name = "Provincia", size = 90)
-    private String territory = null;
+    private String territory = "";
 
     @FieldProperties(name = "CAP", size = 90)
-    private String cap = null;
+    private String cap = "";
 
     @FieldProperties(name = "Nazione", size = 90)
-    private String nation = null;
+    private String nation = "";
 
     @FieldProperties(name = "Telefono", size = 90)
-    private String tel = null;
+    private String tel = "";
 
     @FieldProperties(name = "Fax", size = 90)
-    private String fax = null;
+    private String fax = "";
 
     @FieldProperties(name = "Sito Web", size = 90)
-    private String webiste = null;
+    private String webiste = "";
 
     @FieldProperties(name = "Email", size = 90)
-    private String email = null;
+    private String email = "";
 
     @DefaultFieldValue(defaultStringValue = "sample value")
-    public String getCompany() {
-        return company;
+    public String getRgs() {
+        return rgs;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setRgs(String rgs) {
+        this.rgs = rgs;
     }
 
     @DefaultFieldValue(defaultStringValue = "sample value")
@@ -123,4 +123,19 @@ public class Element {
         this.email = email;
     }
 
+    @Override
+    public String toString(){
+        String output;
+        output = "Ragione sociale: " + getRgs() + "\n" +
+                 "Indirizzo primario: " + getAddress() + "\n" +
+                 "Comune: " + getDistrict() + "\n" +
+                 "Provincia: " + getTerritory() + "\n" +
+                 "CAP: " + getCap() + "\n" +
+                 "Telefono: " + getTel() + "\n" +
+                 "Fax: " + getFax() + "\n" +
+                 "Sito Web: " + getWebsite() + "\n" +
+                 "Email: " + getEmail();
+        return output;
+    }
+    
 }

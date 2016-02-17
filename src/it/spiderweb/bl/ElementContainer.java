@@ -5,30 +5,26 @@
  */
 package it.spiderweb.bl;
 
+import it.spiderweb.gui.customtable.Element;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author agrimandi
  */
-public class ElementContainer {
-
-    public List<Element> elements;
-    
-    public ElementContainer(){}
+public class ElementContainer extends LinkedList<Element> {
+   
+    public ElementContainer(){super();}
     
     public ElementContainer(List<Element> elements){
-        this.elements = elements;
+        super(elements);
     }
-    
-    public List<Element> getElements(){
-        return elements;
-    }
-    
+
     @Override
     public String toString(){
-        String output ="";
-        for(Element elem : elements){
+        String output = "";
+        for(Element elem : this){
             output += elem.toString() +"\n\n";
         }
         return output;
