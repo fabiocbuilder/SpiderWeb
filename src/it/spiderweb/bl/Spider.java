@@ -46,10 +46,10 @@ public class Spider {
     private URL url = null;
 
     /**
-     * Search criteria (represents crawling logic)
+     * File containing the grabbing logic
      */
     private File criteria = null;
-
+   
     //--------------------------------------------------------------------------
     /**
      *
@@ -88,7 +88,7 @@ public class Spider {
         this.url = url;
         this.criteria = criteria;
     }
-
+    
     //--------------------------------------------------------------------------
     /**
      *
@@ -243,18 +243,17 @@ public class Spider {
 
     //--------------------------------------------------------------------------
     /**
-     * Get a JSON array from a given <b>htmlDocument</b> with a <b>blLogicFile</b>
+     * Get a json array from a given <b>htmlDocument</b> with a <b>blLogicFile</b>
      * @param htmlDocument
      * @param criteria
      * @return
      */
     private String getJsonArray(HTMLDocument htmlDocument, File criteria) {        
-        try {
+        try {            
             return (String) WebGrabber.grab(htmlDocument, criteria);
         } catch (IOException | ScriptException ex) {
             return ex.getMessage();
         }
     }
-
-    //--------------------------------------------------------------------------
+    
 }

@@ -9,10 +9,10 @@ var doc = document;
 var rgs = null;
 var address = null;
 var cap = null;
-var tel = null;
-var fax = null;
 var district = null;
 var territory = null;
+var tel = null;
+var fax = null;
 var website = null;
 var email = null;
 
@@ -140,7 +140,7 @@ function search(){
                 website = null;
                 email = doc.searchElement(div_indirizzo + ".../span(class=e-mail)/a");
                 json += "{\"rgs\":" + "\"" + format(rgs) + "\"" + "," +
-                        "\"street_adrs\":" + "\"" + format(address) + "\"" + "," +
+                        "\"address\":" + "\"" + format(address) + "\"" + "," +
                         "\"district\":" + "\"" + format(district) + "\"" + "," +
                         "\"territory\":" + "\"" + territory + "\"" + "," +
                         "\"cap\":" + "\"" + format(cap) + "\"" + "," +
@@ -155,7 +155,7 @@ function search(){
         print("Fine pagina: " + (current_page - 1));
         sleep(8000);
     } while(current_page <= tot_page);   
-    json = json.substring(0,json.length -1) + "]"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa, prima di chiudere il json
+    json = json.substring(0,json.length -1) + "]"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa), prima di chiudere il json
     return json;
 }
 result = search();

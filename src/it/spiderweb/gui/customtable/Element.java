@@ -18,9 +18,6 @@ public class Element {
     @FieldProperties(name = "CAP", size = 90)
     private String cap = "";
 
-    @FieldProperties(name = "Nazione", size = 90)
-    private String nation = "";
-
     @FieldProperties(name = "Telefono", size = 90)
     private String tel = "";
 
@@ -79,15 +76,6 @@ public class Element {
     }
 
     @DefaultFieldValue(defaultStringValue = "sample value")
-    public String getNation() {
-        return nation;
-    }
-
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
-    @DefaultFieldValue(defaultStringValue = "sample value")
     public String getTel() {
         return tel;
     }
@@ -124,18 +112,18 @@ public class Element {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String output;
-        output = "Ragione sociale: " + getRgs() + "\n" +
-                 "Indirizzo primario: " + getAddress() + "\n" +
-                 "Comune: " + getDistrict() + "\n" +
-                 "Provincia: " + getTerritory() + "\n" +
-                 "CAP: " + getCap() + "\n" +
-                 "Telefono: " + getTel() + "\n" +
-                 "Fax: " + getFax() + "\n" +
-                 "Sito Web: " + getWebsite() + "\n" +
-                 "Email: " + getEmail();
+        output = "Ragione sociale: " + getRgs() + "\n"
+                + "Indirizzo primario: " + getAddress() + "\n"
+                + "Comune: " + getDistrict() + "\n"
+                + "Provincia: " + getTerritory() + "\n"
+                + "CAP: " + getCap() + "\n"
+                + "Telefono: " + getTel() + "\n"
+                + "Fax: " + getFax() + "\n"
+                + "Sito Web: " + getWebsite() + "\n"
+                + "Email: " + getEmail();
         return output;
     }
-    
+
 }

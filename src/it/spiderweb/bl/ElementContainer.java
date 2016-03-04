@@ -6,8 +6,10 @@
 package it.spiderweb.bl;
 
 import it.spiderweb.gui.customtable.Element;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  *
@@ -15,12 +17,14 @@ import java.util.List;
  */
 public class ElementContainer extends LinkedList<Element> {
    
+    private static ElementContainer elementContainer = null;
+    
     public ElementContainer(){super();}
     
     public ElementContainer(List<Element> elements){
         super(elements);
     }
-
+    
     @Override
     public String toString(){
         String output = "";

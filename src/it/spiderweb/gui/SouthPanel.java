@@ -5,6 +5,7 @@
  */
 package it.spiderweb.gui;
 
+import it.spiderweb.ClassConstants;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,14 +32,6 @@ public class SouthPanel extends JPanel {
      * Represents a bordered panel which shows the status of the process
      */
     private final JPanel status;
-    /**
-     * Represents the variable which contains the number of contacts
-     */
-    private final int tot;
-    /**
-     * Represents the variable which contains the number of email
-     */
-    private final int totMail;
 
     /**
      * Creates and initializes the south panel
@@ -46,14 +39,12 @@ public class SouthPanel extends JPanel {
     public SouthPanel() {
         super();
         this.setLayout(new GridLayout(1, 3));
-        tot = 0;
-        totMail = 0;
         allRis = new JPanel();
         allRis.setBorder(new EtchedBorder(20));
-        allRis.add(new JLabel("Contatti totali: " + tot));
+        allRis.add(ClassConstants.CONTACT_LABEL);
         mailRis = new JPanel();
         mailRis.setBorder(new EtchedBorder(20));
-        mailRis.add(new JLabel("Mail totali: " + totMail));
+        mailRis.add(ClassConstants.MAIL_LABEL);
         status = new JPanel();
         status.setBorder(new EtchedBorder(20));
         status.add(new JLabel("Stato: " + "0%")); //stringa della percentuale brutale

@@ -5,6 +5,7 @@
  */
 package it.spiderweb.gui;
 
+import it.spiderweb.ClassConstants;
 import java.awt.Container;
 import javax.swing.JFrame;
 
@@ -20,6 +21,7 @@ public class MainFrame extends JFrame {
     public MainFrame(){
         /* Inizializzazione del main frame */
         super("Spider Web - v0.99 ");
+        ClassConstants.buildClassConstants();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(1000, 500);  
         this.setJMenuBar(new Menu());

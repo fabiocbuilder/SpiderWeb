@@ -5,24 +5,8 @@
  */
 package it.spiderweb.gui;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import it.sauronsoftware.grab4j.ScriptException;
-import it.sauronsoftware.grab4j.html.HTMLParseException;
-import it.spiderweb.bl.ElementContainer;
-import it.spiderweb.bl.Spider;
-import it.spiderweb.gui.customtable.CustomTableOP;
-import it.spiderweb.gui.customtable.Element;
+import it.spiderweb.manag.SearchManagement;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collection;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,7 +44,7 @@ public class NorthPanel extends JPanel {
         address = new JLabel("Address: ");
         txtAddress = new JTextField();
         search = new JButton("Search");
-        search.addActionListener(new SearchManagement());
+        search.addActionListener(new SearchManagement(this));
         this.setLayout(new BorderLayout()); //Orientamento degli elementi da sinistra a destra
         this.setBorder(new EtchedBorder(10));
         this.add(address, "West");
@@ -68,71 +52,15 @@ public class NorthPanel extends JPanel {
         this.add(search, "East");
     }
 
-    class SearchManagement implements ActionListener {
-
-        private URL url;
-        private File criteria;
-        private final Gson gson;
-        private final ElementContainer tableElement;
-        
-        public SearchManagement() {
-            url = null;
-            criteria = null;
-            gson = new Gson();
-            tableElement = new ElementContainer();
-        }
-        
-        private synchronized void toList(String json) {
-            while(json.equals("")==true){
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-            Type collectionType = new TypeToken<Collection<Element>>(){}.getType();
-            Collection<Element> list = gson.fromJson(json, collectionType);
-            tableElement.addAll(list);
-        }
-        
-        private void showTable(){
-            CustomTableOP<Element> mainTable = CenterPanel.TABLE;
-            try {
-                mainTable.addElements(tableElement);
-                mainTable.repaint();
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-        
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        try {
-            String txt_url = txtAddress.getText();
-            url = new URL(txt_url);
-            
-            switch(url.getHost()){
-                case "www.paginebianche.it": 
-                    criteria = new File("src/it/spiderweb/paginebianche-grab-logic.js");
-                    break;
-                case "www.paginegialle.it":
-                    criteria = new File("src/it/spiderweb/paginegialle-grab-logic.js");
-                    break;              
-            }
-            
-            Spider spider = new Spider(url,criteria);
-            String json = spider.getJsonArray();
-            
-            toList(json);
-            System.out.println(tableElement.toString());
-            showTable();
-            
-            } catch (MalformedURLException ex) {
-                System.out.println(ex.getMessage());
-            } catch (IOException | HTMLParseException | ScriptException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-
+    public String getTextAdress(){
+        return txtAddress.getText();
+    }
+    
+    public void setSearchActive(){
+        this.search.setEnabled(true);
+    }
+    
+    public void setSearchInactive(){
+        this.search.setEnabled(false);
     }
 }
