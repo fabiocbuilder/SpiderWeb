@@ -25,12 +25,12 @@ public class Element {
     private String fax = "";
 
     @FieldProperties(name = "Sito Web", size = 90)
-    private String webiste = "";
+    private String website = "";
 
     @FieldProperties(name = "Email", size = 90)
     private String email = "";
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultPriorityValue = 1)
     public String getRgs() {
         return rgs;
     }
@@ -39,7 +39,7 @@ public class Element {
         this.rgs = rgs;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 2)
     public String getAddress() {
         return address;
     }
@@ -48,7 +48,7 @@ public class Element {
         this.address = address;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 3)
     public String getDistrict() {
         return district;
     }
@@ -57,7 +57,7 @@ public class Element {
         this.district = district;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 4)
     public String getTerritory() {
         return territory;
     }
@@ -66,7 +66,7 @@ public class Element {
         this.territory = territory;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 5)
     public String getCap() {
         return cap;
     }
@@ -75,7 +75,7 @@ public class Element {
         this.cap = cap;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 6)
     public String getTel() {
         return tel;
     }
@@ -84,7 +84,7 @@ public class Element {
         this.tel = tel;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 7)
     public String getFax() {
         return fax;
     }
@@ -93,16 +93,16 @@ public class Element {
         this.fax = fax;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 8)
     public String getWebsite() {
-        return webiste;
+        return website;
     }
 
-    public void setWebsite(String webiste) {
-        this.webiste = webiste;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
-    @DefaultFieldValue(defaultStringValue = "sample value")
+    @DefaultFieldValue(defaultStringValue = "sample value", defaultPriorityValue = 9)
     public String getEmail() {
         return email;
     }

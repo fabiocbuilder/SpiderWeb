@@ -18,22 +18,23 @@ import javax.swing.table.TableColumnModel;
 
 /**
  * Creates a panel containing a dynamic and customable table
+ *
  * @author IL GRIM
  * @param <E>
  */
 public class CustomTableOP<E> extends JPanel {
-    
-    private List<E> elements = new LinkedList<>();
-    private Map<String, Integer> columns = new HashMap<>();
+
+    private List<E> elements;
+    private Map<String, Integer> columns;
     private E element = null;
-    
-    private final JTable table;
-    private final DefaultTableModel defaultModel;
-    private final JScrollPane scrollPane;
+
+    private JTable table;
+    private DefaultTableModel defaultModel;
+    private JScrollPane scrollPane;
 
     /**
-     * Creates a newly object table with a specified element E and inserts it 
-     * on newly panel object 
+     * Creates a newly object table with a specified element E and inserts it on
+     * newly panel object
      * @param element
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -44,14 +45,16 @@ public class CustomTableOP<E> extends JPanel {
         defaultModel = new DefaultTableModel();
         table = new JTable(defaultModel);
         scrollPane = new JScrollPane(table);
+        elements = new LinkedList<>();
+        columns = new HashMap<>();
         this.element = element;
         build();
     }
 
     /**
      * Creates a newly object table with a specified element E and a specified
-     * list of columns.
-     * Inserts the table into a newly panel object
+     * list of columns. Inserts the table into a newly panel object
+     *
      * @param columns
      * @param element
      * @throws InvocationTargetException
@@ -66,8 +69,8 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Creates a newly object table with a specified element E and a specified
-     * list of rows.
-     * Inserts the table into a newly panel object
+     * list of rows. Inserts the table into a newly panel object
+     *
      * @param elements
      * @param element
      * @throws IllegalAccessException
@@ -81,9 +84,9 @@ public class CustomTableOP<E> extends JPanel {
     }
 
     /**
-     * Creates a newly object table with a list of columns and a specified
-     * list of rows.
-     * Inserts the table into a newly panel object
+     * Creates a newly object table with a list of columns and a specified list
+     * of rows. Inserts the table into a newly panel object
+     *
      * @param columns
      * @param elements
      * @param element
@@ -99,6 +102,7 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Inserts the specified element E at the end of the table
+     *
      * @param element
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
@@ -114,19 +118,37 @@ public class CustomTableOP<E> extends JPanel {
 
             if (clsAnnotation.active()) {
                 Method[] methods = elementClass.getMethods();
-
+                Method[] sortedMethods = new Method[methods.length];
                 for (Method method : methods) {
                     if (method.getName().substring(0, 3).equals("get")) {
                         if (method.isAnnotationPresent(DefaultFieldValue.class)) {
-                            if (method.invoke(element) == null) {
-                                DefaultFieldValue mthAnnotation = method.getAnnotation(DefaultFieldValue.class);
-                                row.addElement(mthAnnotation.defaultStringValue());
+                            DefaultFieldValue annotation = method.getAnnotation(DefaultFieldValue.class);
+                            if (annotation.defaultPriorityValue() > 0) {
+                                sortedMethods[annotation.defaultPriorityValue() - 1] = method;
                             } else {
-                                row.addElement(method.invoke(element));
+                                if (method.invoke(element) == null) {
+                                    DefaultFieldValue mthAnnotation = method.getAnnotation(DefaultFieldValue.class);
+                                    row.addElement(mthAnnotation.defaultStringValue());
+                                } else {
+                                    row.addElement(method.invoke(element));
+                                }
                             }
+                        }
+                    }
+                }
+                for (Method method : sortedMethods) {
+                    if (method == null) {
+                        break;
+                    }
+                    if (method.isAnnotationPresent(DefaultFieldValue.class)) {
+                        if (method.invoke(element) == null) {
+                            DefaultFieldValue mthAnnotation = method.getAnnotation(DefaultFieldValue.class);
+                            row.addElement(mthAnnotation.defaultStringValue());
                         } else {
                             row.addElement(method.invoke(element));
                         }
+                    } else {
+                        row.addElement(method.invoke(element));
                     }
                 }
                 this.defaultModel.addRow(row);
@@ -136,6 +158,7 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Inserts a List of elements E at the end of the table
+     *
      * @param elements
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
@@ -145,9 +168,10 @@ public class CustomTableOP<E> extends JPanel {
         this.elements = elements;
         this.addElements();
     }
-    
+
     /**
      * Inserts a specified column with a given name and size to the table
+     *
      * @param name
      * @param size
      */
@@ -155,9 +179,11 @@ public class CustomTableOP<E> extends JPanel {
         this.columns.put(name, size);
         this.defaultModel.addColumn(name);
     }
-    
+
     /**
-     * Inserts the specified list of columns with a given name and size to the table
+     * Inserts the specified list of columns with a given name and size to the
+     * table
+     *
      * @param columns
      */
     public void addColumns(Map<String, Integer> columns) {
@@ -168,6 +194,7 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Generates the rows of this table
+     *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
@@ -183,6 +210,7 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Generates the columns of this table
+     *
      * @see build()
      */
     protected void generateColumns() {
@@ -211,6 +239,7 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Sizes the current columns of this table
+     *
      * @see build
      */
     protected void sizeColumns() {
@@ -223,17 +252,19 @@ public class CustomTableOP<E> extends JPanel {
             columnIndex++;
         }
     }
-    
+
     /**
      * Returns the current element of this table
+     *
      * @return the elements selected
      */
-    public E getElement(){
+    public E getElement() {
         return element;
     }
 
     /**
      * Returns the rows of this table
+     *
      * @return a List of elements which represents the raws of the table
      */
     public List<E> getElements() {
@@ -242,6 +273,7 @@ public class CustomTableOP<E> extends JPanel {
 
     /**
      * Returns the columns of this table
+     *
      * @return the a Map of elements which represents the columns of the table
      */
     public Map<String, Integer> getColumns() {
@@ -249,7 +281,20 @@ public class CustomTableOP<E> extends JPanel {
     }
 
     /**
+     * Removes all the elements of this table with the specified E element
+     */
+    public void removeRows() {
+        for(int c = 0;c < defaultModel.getRowCount(); c++){
+            defaultModel.removeRow(c);
+        }
+        elements.clear();
+        columns.clear();
+        repaint();
+    }
+
+    /**
      * Creates the table and adds it to this object panel
+     *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
@@ -258,7 +303,7 @@ public class CustomTableOP<E> extends JPanel {
     protected final void build() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         /* Costruzione del panel e aggiunta degli elementi */
         this.setLayout(new BorderLayout());
-        this.add(scrollPane,"Center");
+        this.add(scrollPane, "Center");
         generateColumns();
         sizeColumns();
         addElements();

@@ -5,6 +5,7 @@
  */
 package it.spiderweb;
 
+import it.spiderweb.bl.ElementContainer;
 import it.spiderweb.gui.MainFrame;
 /**
  *
@@ -12,11 +13,15 @@ import it.spiderweb.gui.MainFrame;
  */
 public class SpiderWeb {
 
+    public static MainFrame spiderWeb;
+    public static ElementContainer elementContainer;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MainFrame spiderWeb = new MainFrame();        
+        elementContainer = new ElementContainer();
+        spiderWeb = new MainFrame();        
     }
 
 }

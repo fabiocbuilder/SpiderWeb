@@ -6,17 +6,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
+ *
  * @author agrimandi
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface FieldProperties
-{
-	String name() default "";
-             
-	int size() default 0;
+public @interface FieldProperties {
 
-	boolean visible() default true;
+    String name() default "";
+
+    int size() default 0;
+
+    boolean visible() default true;
+
 }

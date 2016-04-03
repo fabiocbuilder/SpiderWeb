@@ -29,11 +29,11 @@ public class NorthPanel extends JPanel {
     /**
      * Represents the text filed where users can write or paste web addresses
      */
-    private final JTextField txtAddress;
+    private JTextField txtAddress;
     /**
      * Represents the "Search" button
      */
-    private final JButton search;
+    private JButton search;
 
     /**
      * Creates and initializes a newly north panel
@@ -52,15 +52,23 @@ public class NorthPanel extends JPanel {
         this.add(search, "East");
     }
 
-    public String getTextAdress(){
-        return txtAddress.getText();
+    public JTextField getTextAddress(){
+        return txtAddress;
     }
     
-    public void setSearchActive(){
-        this.search.setEnabled(true);
+    public void setTextAddress(JTextField txtAddress){
+        this.txtAddress = txtAddress;
     }
     
-    public void setSearchInactive(){
-        this.search.setEnabled(false);
+    public JButton getSearch(){
+        return search;
+    }
+    
+    public void setSearch(JButton search){
+        this.search = search;
+    }
+    
+    public void setSearchEnabled(boolean choice){
+        this.search.setEnabled(choice);
     }
 }

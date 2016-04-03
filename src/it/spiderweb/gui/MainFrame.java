@@ -5,30 +5,60 @@
  */
 package it.spiderweb.gui;
 
-import it.spiderweb.ClassConstants;
 import java.awt.Container;
 import javax.swing.JFrame;
 
 /**
  * Creates the main frame of the application
+ *
  * @author Fabio
  */
 public class MainFrame extends JFrame {
 
+    private NorthPanel north;
+    private SouthPanel south;
+    private CenterPanel center;
+
     /**
-     * Initializes the main frame 
+     * Initializes the main frame
      */
-    public MainFrame(){
+    public MainFrame() {
         /* Inizializzazione del main frame */
         super("Spider Web - v0.99 ");
-        ClassConstants.buildClassConstants();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(1000, 500);  
+        this.setSize(1000, 500);
         this.setJMenuBar(new Menu());
         Container contentPane = this.getContentPane();
-        contentPane.add(new NorthPanel(),"North");
-        contentPane.add(new CenterPanel(),"Center");
-        contentPane.add(new SouthPanel(),"South");
+        north = new NorthPanel();
+        contentPane.add(north, "North");
+        center = new CenterPanel();
+        contentPane.add(center, "Center");
+        south = new SouthPanel();
+        contentPane.add(south, "South");
         this.setVisible(true);
+    }
+
+    public NorthPanel getNorth() {
+        return north;
+    }
+
+    public void setNorth(NorthPanel north) {
+        this.north = north;
+    }
+
+    public SouthPanel getSouth() {
+        return south;
+    }
+
+    public void setSouth(SouthPanel south) {
+        this.south = south;
+    }
+
+    public CenterPanel getCenter() {
+        return center;
+    }
+
+    public void setCenter(CenterPanel center) {
+        this.center = center;
     }
 }

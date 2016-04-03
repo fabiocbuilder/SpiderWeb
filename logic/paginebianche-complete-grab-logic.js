@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+importClass(Packages.it.spiderweb.bl.SearchHandler);
 
 var doc = document;
 
@@ -16,15 +17,23 @@ var fax = null;
 var website = null;
 var email = null;
 
-/* Indica il numero della pagina corrente */
+/**
+ * Contiene il numero della pagina corrente
+ * @type Number
+ */
 var current_page = 1;
 
-/* Indica il numero di pagine totali */
+/**
+ * Contiene il numero delle pagine totati
+ * @type Number
+ */
 var tot_page = null;
 
 /**
- * Aggiungo un controllo per il numero totale di pagine 
- * (potrebbero giustamente non esserci più pagine per una ricerca)
+ * Cerca l'indicatore delle pagine totali per questa ricerca e ne estrae il contenuto.
+ * Memorizza poi il contenuto dentro la variabile delle pagine totali
+ * Se la pagina non contiene pagine successive, ritorna 1
+ * @see tot_page;
  */
 function getTotPage(){
     tot_page = document.searchElement("html/body/.../div(class=pag-group)/.../p(class=listing-pag-r)/b[1]"); //vado a pescarmi il numerino che indica il numero totale di pagine 
@@ -37,15 +46,25 @@ function getTotPage(){
 }
 
 /**
- * contiene l'URL iniziale della pagina
+ * Contiene il riferimento all'url principale
+ * @type @exp;doc@pro;URL
  */
 var doc_url = doc.URL;
 
 /**
  * Il nostro caro JSON
- * @type String|String
+ * @type String
  */
 var json = "[";
+
+/**
+ * Variabile che contiene il riferimento a un oggetto di tipo ElementHandler
+ * Questo oggetto serve per aggiornare dinamicamente gli elementi grafici, durante
+ * la rircerca dei dati
+ * @type ElementHandler
+ * @see search();
+ */
+var handler = new SearchHandler();
 
 /**
  * Questa funzione toglie inutili informazioni aggiuntive di una specifica 
@@ -69,7 +88,6 @@ function cut(text, elem) {
  * @returns {unresolved|String} output
  */
 function format(tag) {
-    var text; //variabile di appoggio per modifiche 
     var output;
     if (tag === null) {
         output = "";
@@ -80,13 +98,13 @@ function format(tag) {
             case fax:
                 output = cut(tag.getInnerText(), ':');
                 break;
-                /* il caso district nasce per suddividere l'elemento "span(class=locality)",
-                 * che contiene comune e provincia in una unica stringa, in due variabili separate.
-                 */
             case district:
-                text = tag.getInnerText();
+                var text = tag.getInnerText();
                 output = text.substring(0, text.indexOf("("));
-                territory = text.substring(text.indexOf("(") + 1, text.indexOf(")"));
+                break;
+            case territory:
+                var text = tag.getInnerText();
+                output = text.substring(text.indexOf("(") + 1, text.indexOf(")"));
                 break;
             default:
                 output = tag.getInnerText();
@@ -97,7 +115,7 @@ function format(tag) {
 
 /*
  * Mette in pausa il thread in esecuzione secondo il parametro specificato (in millisecondi)
- * Grande stima per: http://stackoverflow.com/questions/16623852/how-to-pause-javascript-code-excution-for-2-seconds
+ * Riferimento: http://stackoverflow.com/questions/16623852/how-to-pause-javascript-code-excution-for-2-seconds
  * @param {type} miliseconds
  * @returns {undefined}
  */
@@ -117,6 +135,7 @@ function sleep(miliseconds) {
  * @returns {json|String}
  */
 function search(){
+    handler.update();
     getTotPage();
     do {
         doc = openDocument(doc_url + "&p=" + current_page++);
@@ -128,34 +147,31 @@ function search(){
              * dentro al sito "www.paginebianche.it" e sono nella forma url: /nome_azienda-comune */
             if (pageLink !== null && pageLink.getAttribute("href").indexOf("http") < 0) {
                 doc = openDocument(pageLink.getLinkURL()); 
-                print(doc.URL);
                 var div_indirizzo = ".../div(class=indirizzo)/";
                 rgs = doc.searchElement(div_indirizzo + "/h1");
                 address = doc.searchElement(div_indirizzo + ".../span(class=street-address)");
                 cap = doc.searchElement(div_indirizzo + ".../span(itemprop=postalCode)"); 
-                district = doc.searchElement(div_indirizzo + ".../span(class=locality)");
+                district = doc.searchElement(div_indirizzo + ".../span(class=locality)"); //locality è un tag che contiene una stringa la quale ingloba provincia e comune, che bisogna separare @see format(tag)
                 territory = doc.searchElement(div_indirizzo + ".../span(class=locality)");
                 tel = doc.searchElement(div_indirizzo + ".../span(class=tel)");
                 fax = null;
                 website = null;
                 email = doc.searchElement(div_indirizzo + ".../span(class=e-mail)/a");
-                json += "{\"rgs\":" + "\"" + format(rgs) + "\"" + "," +
+                json = "{\"rgs\":" + "\"" + format(rgs) + "\"" + "," +
                         "\"address\":" + "\"" + format(address) + "\"" + "," +
                         "\"district\":" + "\"" + format(district) + "\"" + "," +
-                        "\"territory\":" + "\"" + territory + "\"" + "," +
+                        "\"territory\":" + "\"" + format(territory) + "\"" + "," +
                         "\"cap\":" + "\"" + format(cap) + "\"" + "," +
                         "\"tel\":" + "\"" + format(tel) + "\"" + "," +
                         "\"fax\":" + "\"" + format(fax) + "\"" + "," +
                         "\"website\":" + "\"" + format(website) + "\"" + "," +
                         "\"email\":" + "\"" + format(email) + "\"" + "}" + ",";
             }
-            var time = ((Math.random()+2)*1000);
-            sleep(time);
+            handler.update(json.substring(0,json.length -1));
+            sleep(2000);
         }
-        print("Fine pagina: " + (current_page - 1));
         sleep(8000);
-    } while(current_page <= tot_page);   
-    json = json.substring(0,json.length -1) + "]"; //cava l'ultima virgola (di eccesso, posta dopo l'ultima parentesi graffa), prima di chiudere il json
-    return json;
+    } while(current_page <= tot_page);
+    return "";
 }
 result = search();

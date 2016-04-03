@@ -5,12 +5,17 @@
  */
 package it.spiderweb.manag;
 
+import it.sauronsoftware.grab4j.ScriptException;
+import it.sauronsoftware.grab4j.html.HTMLParseException;
 import it.spiderweb.gui.NorthPanel;
-import it.spiderweb.paginebianche.PagineBianche;
+import it.spiderweb.bl.Spider;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,35 +24,53 @@ import java.net.URL;
 public class SearchManagement implements ActionListener, Runnable {
 
     private final NorthPanel north;
-    private URL url;
 
     public SearchManagement(NorthPanel north) {
         this.north = north;
-        url = null;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        north.setSearchInactive();
+        north.setSearchEnabled(false);
         new Thread(this, "SearchingThread").start();
     }
-    
+
     @Override
     public void run() {
         try {
-            url = new URL(north.getTextAdress());
+            Spider spider;
+            URL url;
+            File criteria;
+            url = new URL(north.getTextAddress().getText());
             switch (url.getHost()) {
                 case "www.paginebianche.it":
-                    PagineBianche page = new PagineBianche(url);
-                    page.search();
+                    criteria = new File("logic/paginebianche-complete-grab-logic.js");
                     break;
                 case "www.paginegialle.it":
-                    //bellal vecchiooooo
+                    criteria = new File("inner-grab-logic.js");
+                    break;
+                default:
+                    criteria = new File("");
                     break;
             }
-            north.setSearchActive();
+            spider = new Spider(url, criteria);
+            spider.getJsonArray();
+            JOptionPane.showMessageDialog(null, "Congratulations, you have succesfully completed yout research", "Research Completed!", JOptionPane.WARNING_MESSAGE);
         } catch (MalformedURLException ex) {
-            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "URL Error", JOptionPane.ERROR_MESSAGE);
+        } catch (HTMLParseException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Parse Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ScriptException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Script Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            switch (ex.getMessage()) {
+                case "":
+                    JOptionPane.showMessageDialog(null, "No logic has been implemented for this domain", "IOError", JOptionPane.ERROR_MESSAGE);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "IOError", JOptionPane.ERROR_MESSAGE);
+            }
         }
+        north.setSearchEnabled(true);
     }
 }

@@ -6,18 +6,14 @@
 package it.spiderweb.bl;
 
 import it.spiderweb.gui.customtable.Element;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  *
  * @author agrimandi
  */
 public class ElementContainer extends LinkedList<Element> {
-   
-    private static ElementContainer elementContainer = null;
     
     public ElementContainer(){super();}
     

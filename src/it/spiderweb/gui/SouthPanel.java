@@ -5,7 +5,6 @@
  */
 package it.spiderweb.gui;
 
-import it.spiderweb.ClassConstants;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,15 +22,29 @@ public class SouthPanel extends JPanel {
     /**
      * Represents a bordered panel which shows the current number of contacts
      */
-    private final JPanel allRis;
+    private final JPanel contactPanel;
     /**
      * Represents a bordered panel which shows the current number of email
      */
-    private final JPanel mailRis;
+    private final JPanel mailPanel;
     /**
-     * Represents a bordered panel which shows the status of the process
+     * Represents a bordered panel which shows the statusPanel of the process
      */
-    private final JPanel status;
+    private final JPanel statusPanel;
+
+    private JLabel statusLabel;
+    private JLabel contactLabel;
+    private JLabel emailLabel;
+
+    /**
+     * Represents the variable which contains the number of contacts
+     */
+    private int contactCounter;
+
+    /**
+     * Represents the variable which contains the number of email 
+     */
+    private int emailCounter;
 
     /**
      * Creates and initializes the south panel
@@ -39,17 +52,55 @@ public class SouthPanel extends JPanel {
     public SouthPanel() {
         super();
         this.setLayout(new GridLayout(1, 3));
-        allRis = new JPanel();
-        allRis.setBorder(new EtchedBorder(20));
-        allRis.add(ClassConstants.CONTACT_LABEL);
-        mailRis = new JPanel();
-        mailRis.setBorder(new EtchedBorder(20));
-        mailRis.add(ClassConstants.MAIL_LABEL);
-        status = new JPanel();
-        status.setBorder(new EtchedBorder(20));
-        status.add(new JLabel("Stato: " + "0%")); //stringa della percentuale brutale
-        this.add(allRis);
-        this.add(mailRis);
-        this.add(status);
+        contactCounter = 0;
+        contactLabel = new JLabel("Contatti totali: " + contactCounter);
+        contactPanel = new JPanel();
+        contactPanel.setBorder(new EtchedBorder(20));
+        contactPanel.add(contactLabel);
+        emailCounter = 0;
+        emailLabel = new JLabel("Email totali: " + contactCounter);
+        mailPanel = new JPanel();
+        mailPanel.setBorder(new EtchedBorder(20));
+        mailPanel.add(emailLabel);
+        statusLabel = new JLabel("Stato: " + "0%");
+        statusPanel = new JPanel();
+        statusPanel.setBorder(new EtchedBorder(20));
+        statusPanel.add(statusLabel);
+        this.add(contactPanel);
+        this.add(mailPanel);
+        this.add(statusPanel);
     }
+
+    public JLabel getContactLabel() {
+        return contactLabel;
+    }
+
+    public void setContactLabel(String contactLabel) {
+        this.contactLabel.setText(contactLabel);
+    }
+
+    public int getContactCounter() {
+        return contactCounter;
+    }
+
+    public void setContactCounter(int contactCounter) {
+        this.contactCounter = contactCounter;
+    }
+
+    public JLabel getEmailLabel() {
+        return emailLabel;
+    }
+
+    public void setEmailLabel(String emailLabel) {
+        this.emailLabel.setText(emailLabel);
+    }
+
+    public int getEmailCounter() {
+        return emailCounter;
+    }
+
+    public void setEmailCounter(int emailCounter) {
+        this.emailCounter = emailCounter;
+    }
+    
 }

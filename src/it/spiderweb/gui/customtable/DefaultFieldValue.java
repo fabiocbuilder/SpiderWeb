@@ -6,17 +6,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
+ *
  * @author agrimandi
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface DefaultFieldValue
-{
-	String defaultStringValue() default "";
+public @interface DefaultFieldValue {
 
-	int defaultIntValue() default 0;
+    String defaultStringValue() default "";
 
-	boolean defaultBoolValue() default false;
+    int defaultIntValue() default 0;
+
+    boolean defaultBoolValue() default false;
+
+    int defaultPriorityValue() default 0;
 }

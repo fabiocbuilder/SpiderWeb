@@ -33,23 +33,23 @@ public class Spider {
     /**
      * File path pointing to the file to scan
      */
-    private String path = null;
+    protected String path = null;
 
     /**
      * File to scan
      */
-    private File file = null;
+    protected File file = null;
 
     /**
      * URL pointing to the web page to scan
      */
-    private URL url = null;
+    protected URL url = null;
 
     /**
      * File containing the grabbing logic
      */
-    private File criteria = null;
-   
+    protected File criteria = null;
+
     //--------------------------------------------------------------------------
     /**
      *
@@ -88,7 +88,7 @@ public class Spider {
         this.url = url;
         this.criteria = criteria;
     }
-    
+
     //--------------------------------------------------------------------------
     /**
      *
@@ -165,7 +165,7 @@ public class Spider {
      * @throws IOException
      * @throws HTMLParseException
      */
-    public String getJsonArray(File file, File criteria) throws FileNotFoundException, IOException, HTMLParseException {
+    public String getJsonArray(File file, File criteria) throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         InputStream inputStream = new FileInputStream(file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
         return getJsonArray(htmlDocumentToScan, criteria);
@@ -181,7 +181,7 @@ public class Spider {
      * @throws IOException
      * @throws HTMLParseException
      */
-    public String getJsonArray(String path, File criteria) throws FileNotFoundException, IOException, HTMLParseException {
+    public String getJsonArray(String path, File criteria) throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         File file = new File(path);
         InputStream inputStream = new FileInputStream(file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
@@ -198,7 +198,7 @@ public class Spider {
      * @throws IOException
      * @throws HTMLParseException
      */
-    public String getJsonArray(URL url, File criteria) throws FileNotFoundException, IOException, HTMLParseException {
+    public String getJsonArray(URL url, File criteria) throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(url);
         return getJsonArray(htmlDocumentToScan, criteria);
     }
@@ -210,7 +210,7 @@ public class Spider {
      * @throws IOException
      * @throws HTMLParseException
      */
-    public String getJsonArrayFromFile() throws FileNotFoundException, IOException, HTMLParseException {
+    public String getJsonArrayFromFile() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         InputStream inputStream = new FileInputStream(this.file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
         return getJsonArray(htmlDocumentToScan, this.criteria);
@@ -222,7 +222,7 @@ public class Spider {
      * @throws IOException
      * @throws HTMLParseException
      */
-    public String getJsonArrayFromPath() throws FileNotFoundException, IOException, HTMLParseException {
+    public String getJsonArrayFromPath() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         File file = new File(this.path);
         InputStream inputStream = new FileInputStream(file);
         HTMLDocument htmlDocumentToScan = HTMLDocumentFactory.buildDocument(inputStream);
@@ -238,22 +238,22 @@ public class Spider {
      */
     public String getJsonArray() throws FileNotFoundException, IOException, HTMLParseException, ScriptException {
         HTMLDocument htmlDocument = HTMLDocumentFactory.buildDocument(url);
-        return getJsonArray(htmlDocument,criteria);
+        return getJsonArray(htmlDocument, criteria);
     }
 
     //--------------------------------------------------------------------------
     /**
-     * Get a json array from a given <b>htmlDocument</b> with a <b>blLogicFile</b>
+     * Get a json array from a given <b>htmlDocument</b> with a
+     * <b>blLogicFile</b>
+     *
      * @param htmlDocument
      * @param criteria
      * @return
+     * @throws java.io.IOException
+     * @throws it.sauronsoftware.grab4j.ScriptException
      */
-    private String getJsonArray(HTMLDocument htmlDocument, File criteria) {        
-        try {            
-            return (String) WebGrabber.grab(htmlDocument, criteria);
-        } catch (IOException | ScriptException ex) {
-            return ex.getMessage();
-        }
+    protected String getJsonArray(HTMLDocument htmlDocument, File criteria) throws IOException, ScriptException {
+        return (String) WebGrabber.grab(htmlDocument, criteria);
     }
-    
+
 }

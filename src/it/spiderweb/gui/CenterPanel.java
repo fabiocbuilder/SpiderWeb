@@ -5,10 +5,10 @@
  */
 package it.spiderweb.gui;
 
-import it.spiderweb.ClassConstants;
 import it.spiderweb.gui.customtable.CustomTableOP;
 import it.spiderweb.gui.customtable.Element;
 import java.awt.BorderLayout;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.JPanel;
 
 /**
@@ -23,7 +23,7 @@ public class CenterPanel extends JPanel {
     /**
      * Represents the table which contains all of the data from the web page
      */
-    private final CustomTableOP<Element> table;
+    private CustomTableOP<Element> table;
 
     /**
      * Creates and initializes the center panel
@@ -31,7 +31,27 @@ public class CenterPanel extends JPanel {
     public CenterPanel() {
         super();
         this.setLayout(new BorderLayout());
-        table = ClassConstants.TABLE;
+        try {
+        table = new CustomTableOP<>(new Element());
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            System.out.print(ex.getMessage());
+        }
         this.add(table, "Center");
+    }
+    
+    public CustomTableOP<Element> getTable(){
+        return table;
+    }
+    
+    public void setTable(CustomTableOP<Element> table){
+        this.table = table;
+    }
+    
+    public void addTableElement(Element elem) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        table.addElement(elem);
+    }
+    
+    public void resetTable() {
+        table.removeRows(); 
     }
 }
