@@ -9,7 +9,7 @@ import it.spiderweb.SpiderWeb;
 import it.spiderweb.gui.MainFrame;
 
 /**
- *
+ * Need help for the description of this class
  * @author Fabio
  */
 public abstract class ElementHandler {

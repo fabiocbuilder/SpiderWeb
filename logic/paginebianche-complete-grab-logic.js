@@ -113,7 +113,7 @@ function format(tag) {
     return output;
 }
 
-/*
+/**
  * Mette in pausa il thread in esecuzione secondo il parametro specificato (in millisecondi)
  * Riferimento: http://stackoverflow.com/questions/16623852/how-to-pause-javascript-code-excution-for-2-seconds
  * @param {type} miliseconds
@@ -124,7 +124,7 @@ function sleep(miliseconds) {
    while (currentTime + miliseconds >= new Date().getTime()) {}
 }
 
-/*
+/**
  * Naviga la pagina principale di riferimento. 
  * Entra dentro ai link delle singole aziende, prende le informazioni, esce e
  * rientra nella successiva, fino al termine della lista.
@@ -132,7 +132,7 @@ function sleep(miliseconds) {
  * a terminarle, altrimento si ferma.
  * Inserisce ogni informazione in un json strutturato.
  * Ritorna il json finito
- * @returns {json|String}
+ * @returns {String} json
  */
 function search(){
     handler.update();
@@ -174,4 +174,5 @@ function search(){
     } while(current_page <= tot_page);
     return "";
 }
+
 result = search();

@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 /**
+ * This class manages dynamic connections between the grab logic and the GUI
+ * elements, during "searching time".
  *
  * @author Fabio
  */
@@ -35,6 +37,12 @@ public class SearchHandler extends ElementHandler {
         center = spiderWeb.getCenter();
     }
 
+    /**
+     * Updates the GUI elements and the main container using the json specified
+     * by parameter.
+     *
+     * @param json
+     */
     @Override
     public void update(String json) {
         Gson gson = new Gson();
@@ -55,8 +63,12 @@ public class SearchHandler extends ElementHandler {
         }
     }
 
+    /**
+     * Returns to the beginning state. All data will be cleared
+     */
     public void update() {
         center.resetTable();
+        elementContainer.clear();
         south.setContactCounter(0);
         south.setEmailCounter(0);
         south.setContactLabel("Contatti Totali:" + 0);

@@ -22,7 +22,7 @@ import java.net.URL;
  * specified items on a given web page by using a criteria. A criteria is
  * represented by a Javascript file which contains logic sequences for grabbing
  * specific elements of web pages. For example a criteria could be a Javascript
- * file which returns the title of generic web page. By specifying a web page
+ * file which returns the title of a generic web page. By specifying a web page
  * and a criteria, the spider will apply the content of the criteria on the web
  * page.
  *
@@ -243,8 +243,7 @@ public class Spider {
 
     //--------------------------------------------------------------------------
     /**
-     * Get a json array from a given <b>htmlDocument</b> with a
-     * <b>blLogicFile</b>
+     * Get a json array from a given htmlDocument with a specified criteria
      *
      * @param htmlDocument
      * @param criteria

@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,6 +34,7 @@ public class CustomTableOP<E> extends JPanel {
     /**
      * Creates a newly object table with a specified element E and inserts it on
      * newly panel object
+     *
      * @param element
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
@@ -101,8 +101,14 @@ public class CustomTableOP<E> extends JPanel {
     }
 
     /**
-     * Inserts the specified element E at the end of the table
+     * Inserts the specified element E at the end of the table. This method
+     * analyzes all the "getters" of the specified element E, looking carefully
+     * at their annotations, in particular their "defaultPriorityValue". This
+     * means that for each getter method, the returned value will be added as
+     * defined by its defaultPriorityValue. Otherwise, it will be added
+     * casually.
      *
+     * @see DefaultFieldValue, defaultPriorityValue()
      * @param element
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
@@ -117,15 +123,15 @@ public class CustomTableOP<E> extends JPanel {
             JTBean clsAnnotation = elementClass.getAnnotation(JTBean.class);
 
             if (clsAnnotation.active()) {
-                Method[] methods = elementClass.getMethods();
-                Method[] sortedMethods = new Method[methods.length];
-                for (Method method : methods) {
-                    if (method.getName().substring(0, 3).equals("get")) {
-                        if (method.isAnnotationPresent(DefaultFieldValue.class)) {
+                Method[] methods = elementClass.getMethods(); //prendo tutti i metodi
+                Method[] sortedMethods = new Method[methods.length]; //creo un array che conterrà metodi ordinati per priorità
+                for (Method method : methods) { //per ogni metodo
+                    if (method.getName().substring(0, 3).equals("get")) { //lo analizzo se è un getter
+                        if (method.isAnnotationPresent(DefaultFieldValue.class)) { //ricavo le annotazioni sul metodo
                             DefaultFieldValue annotation = method.getAnnotation(DefaultFieldValue.class);
-                            if (annotation.defaultPriorityValue() > 0) {
-                                sortedMethods[annotation.defaultPriorityValue() - 1] = method;
-                            } else {
+                            if (annotation.defaultPriorityValue() > 0) { //se il valore di priorità è maggiore di 0
+                                sortedMethods[annotation.defaultPriorityValue() - 1] = method; //lo inserisco nell'array dei metodi ordinati
+                            } else { //altrimento lo invoco e lo inserisco nella row
                                 if (method.invoke(element) == null) {
                                     DefaultFieldValue mthAnnotation = method.getAnnotation(DefaultFieldValue.class);
                                     row.addElement(mthAnnotation.defaultStringValue());
@@ -136,11 +142,11 @@ public class CustomTableOP<E> extends JPanel {
                         }
                     }
                 }
-                for (Method method : sortedMethods) {
-                    if (method == null) {
+                for (Method method : sortedMethods) { //una volta iterati tutti i metodi, itero l'array dei metodi ordinati
+                    if (method == null) { //se il metodo è nullo, esco (sono finiti i metodi)
                         break;
                     }
-                    if (method.isAnnotationPresent(DefaultFieldValue.class)) {
+                    if (method.isAnnotationPresent(DefaultFieldValue.class)) { //se è presenta qualche altra annotazione la gestisco
                         if (method.invoke(element) == null) {
                             DefaultFieldValue mthAnnotation = method.getAnnotation(DefaultFieldValue.class);
                             row.addElement(mthAnnotation.defaultStringValue());
@@ -148,7 +154,7 @@ public class CustomTableOP<E> extends JPanel {
                             row.addElement(method.invoke(element));
                         }
                     } else {
-                        row.addElement(method.invoke(element));
+                        row.addElement(method.invoke(element)); //altrimenti lo inserisco direttamente
                     }
                 }
                 this.defaultModel.addRow(row);
@@ -170,7 +176,7 @@ public class CustomTableOP<E> extends JPanel {
     }
 
     /**
-     * Inserts a specified column with a given name and size to the table
+     * Inserts a specified column with a given name and a specified size
      *
      * @param name
      * @param size
@@ -181,8 +187,7 @@ public class CustomTableOP<E> extends JPanel {
     }
 
     /**
-     * Inserts the specified list of columns with a given name and size to the
-     * table
+     * Inserts a specified Map<String, Integer> of columns
      *
      * @param columns
      */
@@ -281,15 +286,14 @@ public class CustomTableOP<E> extends JPanel {
     }
 
     /**
-     * Removes all the elements of this table with the specified E element
+     * Removes all the elements of this table
      */
     public void removeRows() {
-        for(int c = 0;c < defaultModel.getRowCount(); c++){
-            defaultModel.removeRow(c);
+        while(defaultModel.getRowCount()>0){
+            defaultModel.removeRow(0);
         }
         elements.clear();
         columns.clear();
-        repaint();
     }
 
     /**
@@ -301,7 +305,6 @@ public class CustomTableOP<E> extends JPanel {
      * @see generateColumns(), sizeColumns(), addElements()
      */
     protected final void build() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        /* Costruzione del panel e aggiunta degli elementi */
         this.setLayout(new BorderLayout());
         this.add(scrollPane, "Center");
         generateColumns();
