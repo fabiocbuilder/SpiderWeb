@@ -47,7 +47,7 @@ public class SearchManagement implements ActionListener, Runnable {
                     criteria = new File("logic/paginebianche-complete-grab-logic.js");
                     break;
                 case "www.paginegialle.it":
-                    criteria = new File("inner-grab-logic.js");
+                    criteria = new File("logic/paginegialle-complete-grab-logic.js");
                     break;
                 default:
                     criteria = new File("");
