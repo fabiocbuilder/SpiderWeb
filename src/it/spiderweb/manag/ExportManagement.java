@@ -6,11 +6,10 @@
 package it.spiderweb.manag;
 
 import it.spiderweb.SpiderWeb;
-import it.spiderweb.gui.customtable.Element;
+import it.spiderweb.bl.ElementContainer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +17,12 @@ import java.util.logging.Logger;
  *
  * @author Fabio
  */
-public class ExportManagement implements ActionListener, Runnable {
+public class ExportManagement implements ActionListener {
 
-    private final LinkedList<Element> elementContainer;
+    private final ElementContainer elementContainer;
     private FileManagement file;
-    
-    public ExportManagement(String pathName){
+
+    public ExportManagement(String pathName) {
         elementContainer = SpiderWeb.elementContainer;
         try {
             file = new FileManagement(pathName);
@@ -31,27 +30,14 @@ public class ExportManagement implements ActionListener, Runnable {
             Logger.getLogger(ExportManagement.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        new Thread(this,"ExportThread").start();
-    }
 
     @Override
-    public void run() {
-        String output = "";
-        for(Element elem : elementContainer){
-            output = elem.getRgs() + ","
-                    + elem.getAddress() + ","
-                    + elem.getDistrict() + ","
-                    + elem.getTerritory() + ","
-                    + elem.getCap() + ","
-                    + elem.getTel() + ","
-                    + elem.getFax() +","
-                    + elem.getWebsite() +","
-                    + elem.getEmail();
-            file.writesAsCSV(output);
+    public void actionPerformed(ActionEvent e) {
+        file.clear();
+        switch (e.getActionCommand()) {
+            case "Export to CSV":
+                file.writesAsCSV(elementContainer);
+                break;
         }
     }
-    
 }

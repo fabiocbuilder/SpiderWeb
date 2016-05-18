@@ -32,9 +32,9 @@ public class SouthPanel extends JPanel {
      */
     private final JPanel statusPanel;
 
-    private JLabel statusLabel;
-    private JLabel contactLabel;
-    private JLabel emailLabel;
+    private final JLabel statusLabel;
+    private final JLabel contactLabel;
+    private final JLabel emailLabel;
 
     /**
      * Represents the variable which contains the number of contacts

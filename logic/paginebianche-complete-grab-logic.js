@@ -101,13 +101,11 @@ function format(tag) {
             case district:
                 var text = tag.getInnerText();
                 output = text.substring(0, text.indexOf("("));
-                break;
-            case territory:
-                var text = tag.getInnerText();
-                output = text.substring(text.indexOf("(") + 1, text.indexOf(")"));
+                territory = text.substring(text.indexOf("(") + 1, text.indexOf(")"));
                 break;
             default:
                 output = tag.getInnerText();
+                break;
         }
     }
     return output;
@@ -152,7 +150,6 @@ function search(){
                 address = doc.searchElement(div_indirizzo + ".../span(class=street-address)");
                 cap = doc.searchElement(div_indirizzo + ".../span(itemprop=postalCode)"); 
                 district = doc.searchElement(div_indirizzo + ".../span(class=locality)"); //locality è un tag che contiene una stringa la quale ingloba provincia e comune, che bisogna separare @see format(tag)
-                territory = doc.searchElement(div_indirizzo + ".../span(class=locality)");
                 tel = doc.searchElement(div_indirizzo + ".../span(class=tel)");
                 fax = null;
                 website = null;
@@ -160,7 +157,7 @@ function search(){
                 json = "{\"rgs\":" + "\"" + format(rgs) + "\"" + "," +
                         "\"address\":" + "\"" + format(address) + "\"" + "," +
                         "\"district\":" + "\"" + format(district) + "\"" + "," +
-                        "\"territory\":" + "\"" + format(territory) + "\"" + "," +
+                        "\"territory\":" + "\"" + territory + "\"" + "," +
                         "\"cap\":" + "\"" + format(cap) + "\"" + "," +
                         "\"tel\":" + "\"" + format(tel) + "\"" + "," +
                         "\"fax\":" + "\"" + format(fax) + "\"" + "," +
